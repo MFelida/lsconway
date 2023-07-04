@@ -1,0 +1,15 @@
+
+
+#ifndef CONFIG_H
+# define CONFIG_H
+
+#define WINDOW_WIDTH	800
+#define WINDOWS_HEIGHT	600
+
+#define GEN_PER_SECOND	5
+
+#define CELL_SIZE		10
+#define GRID_WIDTH		WINDOW_WIDTH / CELL_SIZE
+#define GRID_HEIGHT		WINDOWS_HEIGHT / CELL_SIZE
+
+#endif
