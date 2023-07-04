@@ -21,10 +21,11 @@ int	initialize_window(void)
 		SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH,
 		WINDOWS_HEIGHT,
-		0);
+		SDL_WINDOW_BORDERLESS
+			| SDL_WINDOW_INPUT_GRABBED);
 	if (!window)
 	{
-		fprintf(stderr, "Erro creating SDL window.\n");
+		fprintf(stderr, "Error creating SDL window.\n");
 		return 0;
 	}
 	renderer = SDL_CreateRenderer(window, -1, 0);
@@ -65,8 +66,15 @@ void	get_input(int *game_running)
 
 void	render(void)
 {
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_Rect	rect;
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
+	rect.h = CELL_SIZE;
+	rect.w = CELL_SIZE;
+	rect.x = 50;
+	rect.y = 50;
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderFillRect(renderer, &rect);
 	SDL_RenderPresent(renderer);
 }

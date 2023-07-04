@@ -12,8 +12,9 @@ int main(void)
 	game_running = initialize_window();
 	while (game_running)
 	{
-		render();
 		get_input(&game_running);
+		update();
+		render();
 	}
 	fprintf(stderr, "End of main reached.\n");
 }
