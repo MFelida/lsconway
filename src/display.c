@@ -5,7 +5,10 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
-int	initialize_window(SDL_Window *window, SDL_Renderer *renderer)
+SDL_Window		*window;
+SDL_Renderer	*renderer;
+
+int	initialize_window(void)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
@@ -18,7 +21,7 @@ int	initialize_window(SDL_Window *window, SDL_Renderer *renderer)
 		SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH,
 		WINDOWS_HEIGHT,
-		SDL_WINDOW_BORDERLESS);
+		0);
 	if (!window)
 	{
 		fprintf(stderr, "Erro creating SDL window.\n");
@@ -30,10 +33,11 @@ int	initialize_window(SDL_Window *window, SDL_Renderer *renderer)
 		fprintf(stderr, "Error creating SDL renderer.\n");
 		return 0;
 	}
+	atexit(destroy_window);
 	return 1;
 }
 
-void	destroy_window(SDL_Window *window, SDL_Renderer *renderer)
+void	destroy_window(void)
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -59,7 +63,7 @@ void	get_input(int *game_running)
 	}
 }
 
-void	render(SDL_Renderer *renderer)
+void	render(void)
 {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);

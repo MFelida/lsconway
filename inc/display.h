@@ -5,8 +5,8 @@
 
 #include <SDL2/SDL.h>
 
-int		initialize_window(SDL_Window *window, SDL_Renderer *renderer);
-void	destroy_window(SDL_Window *window, SDL_Renderer *renderer);
+int		initialize_window(void);
+void	destroy_window(void);
 void	get_input(int *game_running);
-void	render(SDL_Renderer *renderer);
+void	render(void);
 #endif

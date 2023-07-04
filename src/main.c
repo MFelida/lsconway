@@ -7,16 +7,13 @@
 
 int main(void)
 {
-	SDL_Window		*window;
-	SDL_Renderer	*renderer;
-	int game_running;
+	int	game_running;
 
-	game_running = initialize_window(window, renderer);
+	game_running = initialize_window();
 	while (game_running)
 	{
-		render(renderer);
+		render();
 		get_input(&game_running);
 	}
-	destroy_window(window, renderer);
-	fprintf(stderr, "Reached end of main.\n");
+	fprintf(stderr, "End of main reached.\n");
 }
