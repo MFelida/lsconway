@@ -36,6 +36,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 t_conway g_conway;
 
@@ -43,6 +44,8 @@ int		init_conway_grid_arr(int ***grid);
 int	init_conway_grid(t_conway_grid *grid);
 void	conway_swap_grids(void);
 void	change_cell_state(int x, int y, int alive, t_conway_grid *grid);
+void current_to_next(void);
+void	print_grid(int **grid);
 
 int	conway_init(void)
 {
@@ -90,11 +93,7 @@ void	update()
 	int neighbors;
 	int live;
 	
-	for (int i = 0; i < GRID_HEIGHT; i++)
-	{
-		memcpy(g_conway.next_gen->neighbor_counts[i],
-				g_conway.current_gen->neighbor_counts[i], GRID_WIDTH);
-	}
+	current_to_next();
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
@@ -105,7 +104,7 @@ void	update()
 				change_cell_state(x, y, 1, g_conway.next_gen);
 			else if (neighbors == 2 && live)
 				change_cell_state(x, y, 1, g_conway.next_gen);
-			else
+			else if (live)
 				change_cell_state(x, y, 0, g_conway.next_gen);
 		}
 	}
@@ -117,7 +116,7 @@ void	conway_swap_grids(void)
 	t_conway_grid *swap;
 
 	swap = g_conway.current_gen;
-	g_conway.current_gen =g_conway.next_gen;
+	g_conway.current_gen = g_conway.next_gen;
 	g_conway.next_gen = swap;
 }
 
@@ -149,7 +148,6 @@ void	place_pattern(char *filepath, int x, int y)
 
 void	change_cell_state(int x, int y, int alive, t_conway_grid *grid)
 {
-	alive = !!alive;
 	if (g_conway.current_gen->cell_states[y][x] == alive)
 		return;
 	grid->cell_states[y][x] = alive;
@@ -158,8 +156,13 @@ void	change_cell_state(int x, int y, int alive, t_conway_grid *grid)
 	{
 		for (int ix = x - 1; ix <= x + 1; ix++)
 		{
-			if (ix != x || iy != y)
-				grid->neighbor_counts[iy][ix] += alive;
+			if (y < 0 || y >= GRID_HEIGHT)
+				continue;
+			if (x < 0 || x >= GRID_WIDTH)
+				continue;
+			if (ix == x && iy == y)
+				continue;
+			grid->neighbor_counts[iy % GRID_HEIGHT][ix % GRID_WIDTH] += alive;
 		}
 	}
 }
@@ -172,4 +175,27 @@ int	get_cell_state(int x, int y)
 t_conway_grid *get_grid(void)
 {
 	return g_conway.current_gen;
+}
+
+void	current_to_next(void)
+{
+	for (int i = 0; i < GRID_HEIGHT; i++)
+	{
+		memcpy(g_conway.next_gen->neighbor_counts[i],
+				g_conway.current_gen->neighbor_counts[i], GRID_WIDTH * sizeof(int));
+		memcpy(g_conway.next_gen->cell_states[i],
+				g_conway.current_gen->cell_states[i], GRID_WIDTH * sizeof(int));
+	}
+}
+
+void	print_grid(int **grid)
+{
+	for (int j = 0; j < GRID_HEIGHT; j++)
+	{
+		for (int i = 0; i < GRID_WIDTH; i++)
+		{
+			fprintf(stderr, "%d ", grid[j][i]);
+		}
+		fprintf(stderr, "\n");
+	}
 }
