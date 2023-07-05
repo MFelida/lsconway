@@ -16,8 +16,6 @@ LDLIBS := -lSDL2
 
 .PHONY: all re clean fclean
 
--include $(DEPS)
-
 all: $(TARGET)
 
 $(TARGET): $(OBJS) | $(BIN_DIR)
@@ -28,6 +26,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 $(OBJ_DIR) $(BIN_DIR):
 	mkdir -p $@
+	
+-include $(DEPS)
 
 clean:
 	@ rm -f $(OBJS)

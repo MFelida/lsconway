@@ -4,7 +4,7 @@
 # define CONFIG_H
 
 #define WINDOW_WIDTH	800
-#define WINDOWS_HEIGHT	600
+#define WINDOW_HEIGHT	600
 
 #define FPS				30
 #define FRAME_TIME_MS	1000.0/FPS

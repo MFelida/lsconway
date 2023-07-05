@@ -20,7 +20,7 @@ int	initialize_window(void)
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH,
-		WINDOWS_HEIGHT,
+		WINDOW_HEIGHT,
 		SDL_WINDOW_BORDERLESS
 			| SDL_WINDOW_INPUT_GRABBED);
 	if (!window)
@@ -70,11 +70,14 @@ void	render(void)
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	rect.h = CELL_SIZE;
-	rect.w = CELL_SIZE;
-	rect.x = 50;
-	rect.y = 50;
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_RenderFillRect(renderer, &rect);
+	for (int x = CELL_SIZE; x < WINDOW_WIDTH; x += CELL_SIZE)
+	{
+		rect.h = WINDOW_HEIGHT;
+		rect.w = 1;
+		rect.x = x - 1;
+		rect.y = 0;
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 50);
+		SDL_RenderFillRect(renderer, &rect);
+	}
 	SDL_RenderPresent(renderer);
 }
