@@ -46,6 +46,7 @@ void	conway_swap_grids(void);
 void	change_cell_state(int x, int y, int alive, t_conway_grid *grid);
 void current_to_next(void);
 void	print_grid(int **grid);
+int	wrap_index(int n, int limit);
 
 int	conway_init(void)
 {
@@ -156,13 +157,9 @@ void	change_cell_state(int x, int y, int alive, t_conway_grid *grid)
 	{
 		for (int ix = x - 1; ix <= x + 1; ix++)
 		{
-			if (y < 0 || y >= GRID_HEIGHT)
-				continue;
-			if (x < 0 || x >= GRID_WIDTH)
-				continue;
 			if (ix == x && iy == y)
 				continue;
-			grid->neighbor_counts[iy % GRID_HEIGHT][ix % GRID_WIDTH] += alive;
+			grid->neighbor_counts[wrap_index(iy, GRID_HEIGHT)][wrap_index(ix, GRID_WIDTH)] += alive;
 		}
 	}
 }
@@ -198,4 +195,13 @@ void	print_grid(int **grid)
 		}
 		fprintf(stderr, "\n");
 	}
+}
+
+int	wrap_index(int n, int limit)
+{
+	if (n < 0)
+		return n + limit;
+	if (n >= limit)
+		return n - limit;
+	return n;
 }

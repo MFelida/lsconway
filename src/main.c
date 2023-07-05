@@ -39,15 +39,15 @@
 #include <string.h>
 #include <linux/limits.h>
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	char bin_path[PATH_MAX];
 	int	game_running;
 
-
 	memset(bin_path, 0, PATH_MAX);
 	strncpy(bin_path, SDL_GetBasePath(), PATH_MAX);
 	strncat(bin_path, "/../patterns/gosperglidergun.cells", PATH_MAX - strlen(bin_path) - 1);
+
 	game_running = conway_init();
 	if (game_running)
 		place_pattern(bin_path, 10, 10);

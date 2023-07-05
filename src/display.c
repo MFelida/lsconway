@@ -101,9 +101,9 @@ void	render(void)
 	SDL_Rect	rect;
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	for (int y = 0; y < GRID_HEIGHT - 1; y++)
+	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
-		for (int x = 0; x < GRID_WIDTH - 1; x++)
+		for (int x = 0; x < GRID_WIDTH; x++)
 		{
 			if (!get_cell_state(x, y))
 				continue;
