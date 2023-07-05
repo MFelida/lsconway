@@ -42,11 +42,18 @@
 int main(int argc, char *argv[])
 {
 	char bin_path[PATH_MAX];
+	char pattern_path[PATH_MAX];
 	int	game_running;
+
+	if (argc > 1)
+		strcpy(pattern_path, argv[1]);
+	else 
+		strcpy(pattern_path, "../patterns/gosperglidergun.cells");
 
 	memset(bin_path, 0, PATH_MAX);
 	strncpy(bin_path, SDL_GetBasePath(), PATH_MAX);
-	strncat(bin_path, "/../patterns/gosperglidergun.cells", PATH_MAX - strlen(bin_path) - 1);
+	strncat(bin_path, "/", PATH_MAX - strlen(bin_path) - 1);
+	strncat(bin_path, pattern_path, PATH_MAX - strlen(bin_path) - 1);
 
 	game_running = conway_init();
 	if (game_running)
