@@ -48,7 +48,7 @@ typedef struct s_conway
 	t_conway_grid	*next_gen;
 } t_conway;
 
-int	get_cell_state(int x, int y);
+int				get_cell_state(int x, int y);
 int				conway_init(void);
 void			update();
 t_conway_grid	*get_grid(void);

@@ -30,8 +30,9 @@
  *      3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "display.h"
 #include "config.h"
+#include "display.h"
+#include "conway.h"
 
 #include <SDL2/SDL.h>
 #include <stdio.h>
@@ -100,15 +101,19 @@ void	render(void)
 	SDL_Rect	rect;
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-
-	for (int x = CELL_SIZE; x < WINDOW_WIDTH; x += CELL_SIZE)
+	for (int y = 0; y < GRID_HEIGHT - 1; y++)
 	{
-		rect.h = WINDOW_HEIGHT;
-		rect.w = 1;
-		rect.x = x - 1;
-		rect.y = 0;
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 50);
-		SDL_RenderFillRect(renderer, &rect);
+		for (int x = 0; x < GRID_WIDTH - 1; x++)
+		{
+			if (!get_cell_state(x, y))
+				continue;
+			rect.h = CELL_SIZE - CELL_SPACING;
+			rect.w = CELL_SIZE - CELL_SPACING;
+			rect.x = x * CELL_SIZE + CELL_SPACING / 2;
+			rect.y = y * CELL_SIZE + CELL_SPACING / 2;
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+			SDL_RenderFillRect(renderer, &rect);
+		}
 	}
 	SDL_RenderPresent(renderer);
 }

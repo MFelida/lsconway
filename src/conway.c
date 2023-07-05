@@ -39,7 +39,7 @@
 
 t_conway g_conway;
 
-int		init_conway_grid_arr(int **);
+int		init_conway_grid_arr(int ***grid);
 int	init_conway_grid(t_conway_grid *grid);
 void	conway_swap_grids(void);
 void	change_cell_state(int x, int y, int alive, t_conway_grid *grid);
@@ -61,34 +61,55 @@ int	conway_init(void)
 
 int	init_conway_grid(t_conway_grid *grid)
 {
-	init_conway_grid_arr(grid->cell_states);
+	init_conway_grid_arr(&grid->cell_states);
 	if (grid->cell_states == NULL)
 		return 0;
-	init_conway_grid_arr(grid->neighbor_counts);
+	init_conway_grid_arr(&grid->neighbor_counts);
 	if (grid->neighbor_counts == NULL)
 		return 0;
 	return 1;
 }
 
-int	init_conway_grid_arr(int **grid)
+int	init_conway_grid_arr(int ***grid)
 {
-	grid = calloc(GRID_HEIGHT, sizeof(int *));
-	if (grid == NULL)
+	*grid = calloc(GRID_HEIGHT, sizeof(int *));
+	if (*grid == NULL)
 		return 0;
-	grid[0] = 
-		calloc(GRID_HEIGHT * GRID_WIDTH, sizeof(int));
-	if (grid[0] == NULL)
-		return 0;
-	for (int i = 1; i < GRID_HEIGHT; i++)
+	for (int i = 0; i < GRID_HEIGHT; i++)
 	{
-		grid[i] = grid[0] + i * GRID_WIDTH;
+		(*grid)[i] = 
+			calloc(GRID_WIDTH, sizeof(int));
+		if ((*grid)[i] == NULL)
+			return 0;
 	}
 	return 1;
 }
 
 void	update()
 {
+	int neighbors;
+	int live;
 	
+	for (int i = 0; i < GRID_HEIGHT; i++)
+	{
+		memcpy(g_conway.next_gen->neighbor_counts[i],
+				g_conway.current_gen->neighbor_counts[i], GRID_WIDTH);
+	}
+	for (int y = 0; y < GRID_HEIGHT; y++)
+	{
+		for (int x = 0; x < GRID_WIDTH; x++)
+		{
+			neighbors = g_conway.current_gen->neighbor_counts[y][x];
+			live = g_conway.current_gen->cell_states[y][x];
+			if (neighbors == 3)
+				change_cell_state(x, y, 1, g_conway.next_gen);
+			else if (neighbors == 2 && live)
+				change_cell_state(x, y, 1, g_conway.next_gen);
+			else
+				change_cell_state(x, y, 0, g_conway.next_gen);
+		}
+	}
+	conway_swap_grids();
 }
 
 void	conway_swap_grids(void)
