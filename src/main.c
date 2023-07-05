@@ -4,7 +4,7 @@
  * Created Date: We Jul 2023
  * Author: Mike Felida
  * -----
- * Last Modified: Wed Jul 05 2023
+ * Last Modified: Thu Jul 06 2023
  * Modified By: Mike Felida
  * -----
  * Copyright (c) 2023 Mike Felida
@@ -48,11 +48,11 @@ int main(int argc, char *argv[])
 	if (argc > 1)
 		strcpy(pattern_path, argv[1]);
 	else 
-		strcpy(pattern_path, "../patterns/gosperglidergun.cells");
+		strcpy(pattern_path, "patterns/gosperglidergun.cells");
 
 	memset(bin_path, 0, PATH_MAX);
 	strncpy(bin_path, SDL_GetBasePath(), PATH_MAX);
-	strncat(bin_path, "/", PATH_MAX - strlen(bin_path) - 1);
+	strncat(bin_path, "../", PATH_MAX - strlen(bin_path) - 1);
 	strncat(bin_path, pattern_path, PATH_MAX - strlen(bin_path) - 1);
 
 	game_running = conway_init();
