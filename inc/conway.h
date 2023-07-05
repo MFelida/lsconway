@@ -48,9 +48,10 @@ typedef struct s_conway
 	t_conway_grid	*next_gen;
 } t_conway;
 
-void update();
-void change_cell_state(int x, int y, int alive, t_conway_grid *grid);
-t_conway *get_grid(void);
-
+int	get_cell_state(int x, int y);
+int				conway_init(void);
+void			update();
+t_conway_grid	*get_grid(void);
+void			place_pattern(char *filepath, int x, int y);
 #endif
 

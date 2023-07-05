@@ -36,12 +36,22 @@
 
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include <string.h>
+#include <linux/limits.h>
 
 int main(void)
 {
+	char bin_path[PATH_MAX];
 	int	game_running;
 
-	game_running = initialize_window();
+
+	memset(bin_path, 0, PATH_MAX);
+	strncpy(bin_path, SDL_GetBasePath(), PATH_MAX);
+	strncat(bin_path, "/../patterns/gosperglidergun.cells", PATH_MAX - strlen(bin_path) - 1);
+	if (conway_init())
+		place_pattern(bin_path, 10, 10);
+
+	game_running = game_running && initialize_window();
 	while (game_running)
 	{
 		get_input(&game_running);
