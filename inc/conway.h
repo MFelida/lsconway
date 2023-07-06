@@ -55,7 +55,7 @@ int				conway_init(void);
 void			update(void);
 t_conway_grid	*get_grid(void);
 void			place_pattern(char *filepath, int x, int y);
-void	draw_from_mouse();
+void			draw_from_mouse();
 
 #endif
 

@@ -36,10 +36,10 @@
 #define WINDOW_WIDTH	1600
 #define WINDOW_HEIGHT	1000
 
-#define FPS				60
+#define FPS				240
 #define FRAME_TIME_MS	(1000.0/FPS)
 
-#define GEN_PER_SECOND	20
+#define GEN_PER_SECOND	30
 #define GEN_DURATION_MS	(1000.0/GEN_PER_SECOND)
 
 #define CELL_SIZE		4

@@ -77,10 +77,9 @@ void	destroy_window(void)
 	SDL_Quit();
 }
 
-void	get_input(int *game_running)
+void	get_input(int *game_running, int *paused)
 {
 	SDL_Event event;
-	int x, y;
 
 	while (SDL_PollEvent(&event))
 	{
@@ -92,6 +91,8 @@ void	get_input(int *game_running)
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				*game_running = 0;
+			if (event.key.keysym.sym == SDLK_SPACE)
+				*paused = !(*paused);
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
@@ -102,8 +103,6 @@ void	get_input(int *game_running)
 			break;
 		}
 	}
-	if (SDL_GetMouseState(&x, &y) & SDL_BUTTON(1))
-		draw_from_mouse();
 }
 
 void	render(void)

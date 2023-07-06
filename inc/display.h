@@ -37,6 +37,6 @@
 
 int		initialize_window(void);
 void	destroy_window(void);
-void	get_input(int *game_running);
+void	get_input(int *game_running, int *paused);
 void	render(void);
 #endif

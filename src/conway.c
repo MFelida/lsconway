@@ -118,17 +118,91 @@ void	update(void)
 	last_update = SDL_GetTicks();
 }
 
+void draw_linelow(int x0, int y0, int x1, int y1)
+{
+	int dx = x1 - x0;
+	int dy = y1 - y0;
+	int inc_y = 1;
+	if (dy < 0)
+	{
+		inc_y = -1;
+		dy *= -1;
+	}
+	int D = (2* dy) - dx;
+
+	for (x0 = x0; x0 != x1; x0++)
+	{
+		change_cell_state(x0, y0, 1, g_conway.current_gen);
+		if (D > 0)
+		{
+			y0 += inc_y;
+			D += 2 * (dy - dx);
+		}
+		else
+			D += 2 * dy;
+	}
+}
+void draw_linehigh(int x0, int y0, int x1, int y1)
+{
+	int dx = x1 - x0;
+	int dy = y1 - y0;
+	int inc_x = 1;
+	if (dx < 0)
+	{
+		inc_x = -1;
+		dx *= -1;
+	}
+	int D = (2* dx) - dy;
+
+	for (y0 = y0; y0 != y1; y0++)
+	{
+		change_cell_state(x0, y0, 1, g_conway.current_gen);
+		if (D > 0)
+		{
+			x0 += inc_x;
+			D += 2 * (dx - dy);
+		}
+		else
+			D += 2 * dx;
+	}
+}
+
+void	draw_line(int x0, int y0, int x1, int y1)
+{
+	if (SDL_abs(y1 - y0) < SDL_abs(x1 - x0))
+	{
+		if (x0 > x1)
+			draw_linelow(x1, y1, x0,y0);
+		else
+			draw_linelow(x0, y0, x1, y1);
+	}
+	else
+	{
+		if (y0 > y1)
+			draw_linehigh(x1, y1, x0, y0);
+		else
+			draw_linehigh(x0, y0, x1, y1);
+	}
+}
+
 void	draw_from_mouse(void)
 {
 	int x;
 	int y;
-	uint32_t state = SDL_GetMouseState(&x, &y);
+	uint32_t state = SDL_GetMouseState(&x, &y) & SDL_BUTTON(1);
+	static int prev_x = 0;
+	static int prev_y = 0;
+	static uint32_t prev_state = 0;
 	
-	if (!(state & SDL_BUTTON(1)))
-		return;
-
-	if (x > 0 && x < WINDOW_WIDTH
-		&& y > 0 && y < WINDOW_HEIGHT)
+	if (!state || !(x > 0 && x < WINDOW_WIDTH
+		&& y > 0 && y < WINDOW_HEIGHT));
+	else if (prev_state == state)
+	{
+		draw_line(prev_x / CELL_SIZE, prev_y / CELL_SIZE, x / CELL_SIZE, y / CELL_SIZE);
+		prev_x = x;
+		prev_y = y;
+	}
+	else
 	{
 		change_cell_state(
 			x / CELL_SIZE,
@@ -136,6 +210,9 @@ void	draw_from_mouse(void)
 			1,
 			g_conway.current_gen);
 	}
+	prev_state = state;
+	prev_x = x;
+	prev_y = y;
 }
 
 void	conway_swap_grids(void)

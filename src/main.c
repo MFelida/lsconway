@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
 	char bin_path[PATH_MAX];
 	char pattern_path[PATH_MAX];
 	int	game_running;
+	int paused = 0;
 
 	if (argc > 1)
 		strcpy(pattern_path, argv[1]);
@@ -61,8 +62,9 @@ int main(int argc, char *argv[])
 	game_running = game_running && initialize_window();
 	while (game_running)
 	{
-		get_input(&game_running);
-		update();
+		get_input(&game_running, &paused);
+		if (!paused)
+			update();
 		render();
 		SDL_Delay(FRAME_TIME_MS);
 	}
