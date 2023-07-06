@@ -4,7 +4,7 @@
  * Created Date: We Jul 2023
  * Author: Mike Felida
  * -----
- * Last Modified: Wed Jul 05 2023
+ * Last Modified: Thu Jul 06 2023
  * Modified By: Mike Felida
  * -----
  * Copyright (c) 2023 Mike Felida
@@ -34,6 +34,8 @@
 # define CONWAY_H
 #include "config.h"
 
+#include <SDL2/SDL.h>
+
 typedef struct s_conway_grid
 {
 	int **cell_states;
@@ -50,8 +52,10 @@ typedef struct s_conway
 
 int				get_cell_state(int x, int y);
 int				conway_init(void);
-void			update();
+void			update(void);
 t_conway_grid	*get_grid(void);
 void			place_pattern(char *filepath, int x, int y);
+void	draw_from_mouse();
+
 #endif
 

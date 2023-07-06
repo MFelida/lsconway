@@ -4,7 +4,7 @@
  * Created Date: We Jul 2023
  * Author: Mike Felida
  * -----
- * Last Modified: Wed Jul 05 2023
+ * Last Modified: Thu Jul 06 2023
  * Modified By: Mike Felida
  * -----
  * Copyright (c) 2023 Mike Felida
@@ -80,20 +80,30 @@ void	destroy_window(void)
 void	get_input(int *game_running)
 {
 	SDL_Event event;
+	int x, y;
 
-	SDL_PollEvent(&event);
-	switch (event.type)
+	while (SDL_PollEvent(&event))
 	{
-	case SDL_QUIT:
-		*game_running = 0;
-		break;
-	case SDL_KEYDOWN:
-		if (event.key.keysym.sym == SDLK_ESCAPE)
+		switch (event.type)
+		{
+		case SDL_QUIT:
 			*game_running = 0;
-		break;
-	default:
-		break;
+			break;
+		case SDL_KEYDOWN:
+			if (event.key.keysym.sym == SDLK_ESCAPE)
+				*game_running = 0;
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+		case SDL_MOUSEMOTION:
+			draw_from_mouse();
+			break;
+		default:
+			break;
+		}
 	}
+	if (SDL_GetMouseState(&x, &y) & SDL_BUTTON(1))
+		draw_from_mouse();
 }
 
 void	render(void)

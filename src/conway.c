@@ -4,7 +4,7 @@
  * Created Date: We Jul 2023
  * Author: Mike Felida
  * -----
- * Last Modified: Wed Jul 05 2023
+ * Last Modified: Thu Jul 06 2023
  * Modified By: Mike Felida
  * -----
  * Copyright (c) 2023 Mike Felida
@@ -34,6 +34,7 @@
 #include "conway.h"
 #include "util.h"
 
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -89,11 +90,15 @@ int	init_conway_grid_arr(int ***grid)
 	return 1;
 }
 
-void	update()
+void	update(void)
 {
+	static uint32_t last_update = 0;
 	int neighbors;
 	int live;
 	
+	if (SDL_GetTicks() - last_update < GEN_DURATION_MS)
+		return;
+
 	current_to_next();
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
@@ -110,6 +115,27 @@ void	update()
 		}
 	}
 	conway_swap_grids();
+	last_update = SDL_GetTicks();
+}
+
+void	draw_from_mouse(void)
+{
+	int x;
+	int y;
+	uint32_t state = SDL_GetMouseState(&x, &y);
+	
+	if (!(state & SDL_BUTTON(1)))
+		return;
+
+	if (x > 0 && x < WINDOW_WIDTH
+		&& y > 0 && y < WINDOW_HEIGHT)
+	{
+		change_cell_state(
+			x / CELL_SIZE,
+			y / CELL_SIZE,
+			1,
+			g_conway.current_gen);
+	}
 }
 
 void	conway_swap_grids(void)

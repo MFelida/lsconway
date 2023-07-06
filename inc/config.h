@@ -4,7 +4,7 @@
  * Created Date: We Jul 2023
  * Author: Mike Felida
  * -----
- * Last Modified: Wed Jul 05 2023
+ * Last Modified: Thu Jul 06 2023
  * Modified By: Mike Felida
  * -----
  * Copyright (c) 2023 Mike Felida
@@ -33,10 +33,10 @@
 #ifndef CONFIG_H
 # define CONFIG_H
 
-#define WINDOW_WIDTH	800
-#define WINDOW_HEIGHT	600
+#define WINDOW_WIDTH	1600
+#define WINDOW_HEIGHT	1000
 
-#define FPS				30
+#define FPS				60
 #define FRAME_TIME_MS	(1000.0/FPS)
 
 #define GEN_PER_SECOND	20

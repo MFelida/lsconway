@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 		get_input(&game_running);
 		update();
 		render();
-		SDL_Delay(GEN_DURATION_MS);
+		SDL_Delay(FRAME_TIME_MS);
 	}
 	fprintf(stderr, "End of main reached.\n");
 }
