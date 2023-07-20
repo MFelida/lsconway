@@ -194,8 +194,8 @@ void	draw_from_mouse(void)
 	static int prev_y = 0;
 	static uint32_t prev_state = 0;
 	
-	if (!state || !(x > 0 && x < WINDOW_WIDTH
-		&& y > 0 && y < WINDOW_HEIGHT));
+	if (!state || !(x >= 0 && x < WINDOW_WIDTH
+		&& y >= 0 && y < WINDOW_HEIGHT));
 	else if (prev_state == state)
 	{
 		draw_line(prev_x / CELL_SIZE, prev_y / CELL_SIZE, x / CELL_SIZE, y / CELL_SIZE);
